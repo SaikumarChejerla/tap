@@ -1,7 +1,5 @@
 package com.tap.entity;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="volunteer")
@@ -49,7 +45,7 @@ public class Volunteer {
 						 CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinColumn(name="schoolid",referencedColumnName="id")
 	private School school;
-		
+	
 	// define constructors
 	
 	public Volunteer() {
