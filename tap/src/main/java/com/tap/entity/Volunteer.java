@@ -1,11 +1,19 @@
 package com.tap.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="volunteer")
@@ -24,17 +32,23 @@ public class Volunteer {
 	@Column(name="lastname")
 	private String lastName;
 	
-	@Column(name="verticalid")
-	private int vertical;
-	
 	@Column(name="email")
 	private String email;
 	
 	@Column(name="mobilenumber")
 	private long mobileNumber;
 	
-	@Column(name="schoolid")
-	private int schoolId;
+	@ManyToOne(fetch= FetchType.LAZY,
+			cascade= {CascadeType.PERSIST,CascadeType.MERGE,
+			 			 CascadeType.DETACH,CascadeType.REFRESH})
+	@JoinColumn(name="verticalid",referencedColumnName="id")
+	private Vertical vertical;
+	
+	@ManyToOne(fetch= FetchType.LAZY,
+			cascade= {CascadeType.PERSIST,CascadeType.MERGE,
+						 CascadeType.DETACH,CascadeType.REFRESH})
+	@JoinColumn(name="schoolid",referencedColumnName="id")
+	private School school;
 		
 	// define constructors
 	
@@ -42,14 +56,16 @@ public class Volunteer {
 		
 	}
 
-	public Volunteer(int id, String firstName, String lastName, int vertical, String email, long mobileNumber,int schoolId) {
+	public Volunteer(int id, String firstName, String lastName, String email, long mobileNumber, Vertical vertical,
+			School school) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.vertical = vertical;
 		this.email = email;
 		this.mobileNumber = mobileNumber;
-		this.schoolId = schoolId;
+		this.vertical = vertical;
+		this.school = school;
 	}
 
 	public int getId() {
@@ -76,14 +92,6 @@ public class Volunteer {
 		this.lastName = lastName;
 	}
 
-	public int getVertical() {
-		return vertical;
-	}
-
-	public void setVertical(int vertical) {
-		this.vertical = vertical;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -100,20 +108,22 @@ public class Volunteer {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public int getSchoolId() {
-		return schoolId;
+	public String getVertical() {
+		return vertical.getName();
 	}
 
-	public void setSchoolId(int schoolId) {
-		this.schoolId = schoolId;
+	public void setVertical(Vertical vertical) {
+		this.vertical = vertical;
 	}
 
-	@Override
-	public String toString() {
-		return "Volunteer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", vertical=" + vertical
-				+ ", email=" + email + ", mobileNumber=" + mobileNumber + ", schoolId=" + schoolId + "]";
+	public String getSchool() {
+		return school.getName();
 	}
-	
+
+	public void setSchool(School school) {
+		this.school = school;
+	}
+
 }
 
 

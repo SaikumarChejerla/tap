@@ -9,15 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="vertical")
-public class Vertical {
+@Table(name="school")
+public class School {
 
 	// define fields
 	
@@ -29,30 +26,39 @@ public class Vertical {
 	@Column(name="name")
 	private String name;
 	
+	@Column(name="address")
+	private String address;	
+	
+	@Column(name="city")
+	private String city;
+	
 	@OneToMany(fetch= FetchType.LAZY,
-			mappedBy="vertical",
+			mappedBy="school",  targetEntity = Volunteer.class,
 				cascade = {CascadeType.PERSIST,CascadeType.MERGE,
 					CascadeType.DETACH,CascadeType.REFRESH})
-	private List<Student> students;
+	private List<Volunteer> volunteers;
 	
 	@OneToMany(fetch= FetchType.LAZY,
-			mappedBy="vertical",
-			cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-				CascadeType.DETACH,CascadeType.REFRESH})
-	private List<Volunteer> volunteers;
-
+			mappedBy="school", targetEntity = Student.class,
+				cascade = {CascadeType.PERSIST,CascadeType.MERGE,
+						CascadeType.DETACH,CascadeType.REFRESH})
+	private List<Student> students;
+		
 	// define constructors
 	
-	public Vertical() {
+	public School() {
 		
 	}
 
-	public Vertical(int id, String name, List<Student> students, List<Volunteer> volunteers) {
+	public School(int id, String name, String address, String city, List<Volunteer> volunteers,
+			List<Student> students) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.students = students;
+		this.address = address;
+		this.city = city;
 		this.volunteers = volunteers;
+		this.students = students;
 	}
 
 	public int getId() {
@@ -71,12 +77,20 @@ public class Vertical {
 		this.name = name;
 	}
 
-	public List<Student> getStudents() {
-		return students;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setStudents(List<Student> students) {
-		this.students = students;
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public List<Volunteer> getVolunteers() {
@@ -85,6 +99,14 @@ public class Vertical {
 
 	public void setVolunteers(List<Volunteer> volunteers) {
 		this.volunteers = volunteers;
+	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 }
