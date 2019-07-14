@@ -1,5 +1,6 @@
 package com.tap.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="school")
-public class School {
+public class School implements Serializable  {
 
-	// define fields
-	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
@@ -32,16 +35,18 @@ public class School {
 	@Column(name="city")
 	private String city;
 	
+	@JsonBackReference
 	@OneToMany(fetch= FetchType.LAZY,
 			mappedBy="school",  targetEntity = Volunteer.class,
 				cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-					CascadeType.DETACH,CascadeType.REFRESH})
+					CascadeType.DETACH})
 	private List<Volunteer> volunteers;
 	
+	@JsonBackReference
 	@OneToMany(fetch= FetchType.LAZY,
 			mappedBy="school", targetEntity = Student.class,
 				cascade = {CascadeType.PERSIST,CascadeType.MERGE,
-						CascadeType.DETACH,CascadeType.REFRESH})
+						CascadeType.DETACH})
 	private List<Student> students;
 		
 	// define constructors

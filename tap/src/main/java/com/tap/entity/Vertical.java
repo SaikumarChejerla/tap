@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="vertical")
 public class Vertical {
@@ -26,12 +28,14 @@ public class Vertical {
 	@Column(name="name")
 	private String name;
 	
+	@JsonBackReference
 	@OneToMany(fetch= FetchType.LAZY,
 			mappedBy="vertical",
 				cascade = {CascadeType.PERSIST,CascadeType.MERGE,
 					CascadeType.DETACH,CascadeType.REFRESH})
 	private List<Student> students;
 	
+	@JsonBackReference
 	@OneToMany(fetch= FetchType.LAZY,
 			mappedBy="vertical",
 			cascade = {CascadeType.PERSIST,CascadeType.MERGE,

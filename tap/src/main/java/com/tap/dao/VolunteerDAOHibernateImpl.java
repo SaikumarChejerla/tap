@@ -43,6 +43,14 @@ public class VolunteerDAOHibernateImpl implements VolunteerDAO {
 		return volunteers;
 	}
 
+
+	@Override
+	public Volunteer getById(int id) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		return currentSession.get(Volunteer.class, id);
+	}
+
 }
 
 

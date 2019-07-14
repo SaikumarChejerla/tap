@@ -1,5 +1,7 @@
 package com.tap.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="volunteer")
-public class Volunteer {
+public class Volunteer implements Serializable{
 
-	// define fields
-	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
@@ -34,16 +39,20 @@ public class Volunteer {
 	@Column(name="mobilenumber")
 	private long mobileNumber;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch= FetchType.LAZY,
 			cascade= {CascadeType.PERSIST,CascadeType.MERGE,
 			 			 CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinColumn(name="verticalid",referencedColumnName="id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Vertical vertical;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch= FetchType.LAZY,
 			cascade= {CascadeType.PERSIST,CascadeType.MERGE,
 						 CascadeType.DETACH,CascadeType.REFRESH})
 	@JoinColumn(name="schoolid",referencedColumnName="id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private School school;
 	
 	// define constructors
@@ -104,16 +113,16 @@ public class Volunteer {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public String getVertical() {
-		return vertical.getName();
+	public Vertical getVertical() {
+		return vertical;
 	}
 
 	public void setVertical(Vertical vertical) {
 		this.vertical = vertical;
 	}
 
-	public String getSchool() {
-		return school.getName();
+	public School getSchool() {
+		return school;
 	}
 
 	public void setSchool(School school) {
