@@ -29,7 +29,6 @@ public class StudentDAOHibernateImpl implements StudentDAO {
 		entityManager = theEntityManager;
 	}
 	
-	
 	@Override
 	@Transactional
 	public List<Student> findAll() {
@@ -69,6 +68,25 @@ public class StudentDAOHibernateImpl implements StudentDAO {
 		return students;
 	}
 
+
+	
+	@Override
+	@Transactional
+	public void saveStudent(Student student) {
+		
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		currentSession.saveOrUpdate(student);
+	}
+
+	@Override
+	@Transactional
+	public Student findById(int studentid) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		
+		Student student = currentSession.get(Student.class, studentid);
+		return student;
+	}
 }
 
 

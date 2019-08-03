@@ -10,5 +10,9 @@ public interface StudentDAO {
 	public List<Student> findAll();
 
 	public List<Student> getByVolunteer(Volunteer volunteer);
+	
+	public void saveStudent(Student student);
+
+	public Student findById(int studentid);
 		
 }
